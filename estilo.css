@@ -23,6 +23,21 @@ body {
   gap: 48px;
 }
 
+/* ── Área de imagem PNG do envelope ── */
+.envelope-img-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.envelope-img {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 /* ── Envelope ── */
 .envelope-body {
   position: relative;
