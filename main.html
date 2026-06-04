@@ -19,37 +19,29 @@
       />
     </div>
 
-    <div class="envelope" id="envelope">
-      <div class="envelope-body">
-        <div class="envelope-flap"></div>
-        <div class="envelope-front">
-          <div class="letter-lines">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn" id="btn" onclick="animarEnvelope()">
+    <button class="btn" id="btn" onclick="abrirCarta()">
       <span class="btn-text">Abra a Carta</span>
     </button>
   </div>
 
+  <div class="carta-overlay" id="cartaOverlay" onclick="fecharCarta()">
+    <div class="carta-conteudo" onclick="event.stopPropagation()">
+      <img
+        src="carta.png"
+        alt="Carta"
+        class="carta-img"
+        onerror="this.style.display='none'"
+      />
+      <button class="btn-fechar" onclick="fecharCarta()">✕</button>
+    </div>
+  </div>
+
   <script>
-    let aberto = false;
-    function animarEnvelope() {
-      const envelope = document.getElementById('envelope');
-      const btn = document.getElementById('btn');
-      aberto = !aberto;
-      if (aberto) {
-        envelope.classList.add('aberto');
-        btn.querySelector('.btn-text').textContent = 'Fechar';
-      } else {
-        envelope.classList.remove('aberto');
-        btn.querySelector('.btn-text').textContent = 'Pressione-me';
-      }
+    function abrirCarta() {
+      document.getElementById('cartaOverlay').classList.add('visivel');
+    }
+    function fecharCarta() {
+      document.getElementById('cartaOverlay').classList.remove('visivel');
     }
   </script>
 
