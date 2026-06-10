@@ -25,21 +25,33 @@
   </div>
 
   <div class="carta-overlay" id="cartaOverlay" onclick="fecharCarta()">
-    <div class="carta-conteudo" onclick="event.stopPropagation()">
-      <img
-        src="carta.png"
-        alt="Carta"
-        class="carta-img"
-        onerror="this.style.display='none'"
-      />
+    <div class="carta-conteudo" id="cartaConteudo" onclick="event.stopPropagation()">
+      <div class="livro">
+        <img src="pagina1.png" alt="Página 1" class="pagina pagina-esq" onerror="this.style.display='none'" />
+        <div class="livro-espinha"></div>
+        <img src="pagina2.png" alt="Página 2" class="pagina" onerror="this.style.display='none'" />
+        <div class="livro-espinha"></div>
+        <div class="pagina-wrap">
+          <img src="pagina3.png" alt="Página 3" class="pagina pagina-dir" onerror="this.style.display='none'" />
+          <div class="spotify-overlay">
+            <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6tiF3DY2Yh9dmIuIVCJHHH?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
       <button class="btn-fechar" onclick="fecharCarta()">✕</button>
     </div>
   </div>
 
   <script>
     function abrirCarta() {
-      document.getElementById('cartaOverlay').classList.add('visivel');
+      const overlay = document.getElementById('cartaOverlay');
+      const conteudo = document.getElementById('cartaConteudo');
+      overlay.classList.add('visivel');
+      conteudo.classList.remove('animar');
+      void conteudo.offsetWidth;
+      conteudo.classList.add('animar');
     }
+
     function fecharCarta() {
       document.getElementById('cartaOverlay').classList.remove('visivel');
     }

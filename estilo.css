@@ -77,19 +77,24 @@ body {
 .carta-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.45s ease;
   z-index: 100;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
 }
 
 .carta-overlay.visivel {
   opacity: 1;
   pointer-events: all;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: opacity 0.45s ease, backdrop-filter 0.45s ease;
 }
 
 .carta-conteudo {
@@ -97,22 +102,87 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: scale(0.88);
-  transition: transform 0.35s ease;
+  transform-origin: center 60%;
 }
 
-.carta-overlay.visivel .carta-conteudo {
-  transform: scale(1);
+@keyframes abrirPagina {
+  0% {
+    transform: perspective(900px) rotateX(80deg) scale(0.65) translateY(40px);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  45% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  70% {
+    transform: perspective(900px) rotateX(-5deg) scale(1.04) translateY(-8px);
+  }
+  88% {
+    transform: perspective(900px) rotateX(2deg) scale(0.98) translateY(3px);
+  }
+  100% {
+    transform: perspective(900px) rotateX(0deg) scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0px);
+  }
 }
 
-.carta-img {
-  max-width: 90vw;
-  max-height: 85vh;
+.carta-conteudo.animar {
+  animation: abrirPagina 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Livro ── */
+.livro {
+  display: flex;
+  align-items: stretch;
+  border-radius: 4px 8px 8px 4px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.pagina {
+  max-width: 28vw;
+  max-height: 82vh;
   width: auto;
   height: auto;
   display: block;
   object-fit: contain;
-  border-radius: 8px;
+}
+
+.pagina-esq {
+  border-radius: 4px 0 0 4px;
+}
+
+.pagina-dir {
+  border-radius: 0 4px 4px 0;
+}
+
+.pagina-wrap {
+  position: relative;
+  line-height: 0;
+}
+
+.spotify-overlay {
+  position: absolute;
+  top: 14%;
+  left: 8%;
+  width: 84%;
+  pointer-events: all;
+}
+
+.livro-espinha {
+  width: 10px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.06) 40%,
+    rgba(255, 255, 255, 0.08) 55%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
 }
 
 .btn-fechar {
