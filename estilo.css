@@ -7,23 +7,66 @@
 }
 
 body {
-  background-color: #ffffff;
+  background: linear-gradient(160deg, #fff0f5 0%, #fce4ec 55%, #f8d0e4 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Nunito', 'Lora', Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* ── Corações flutuantes ── */
+.coracoes-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.coracao {
+  position: absolute;
+  bottom: -60px;
+  color: #e8637a;
+  pointer-events: none;
+  user-select: none;
+  animation: subirCoracao linear infinite;
+}
+
+@keyframes subirCoracao {
+  0%   { transform: translateY(0)      rotate(0deg)   scale(1);   opacity: inherit; }
+  15%  { opacity: inherit; }
+  85%  { opacity: inherit; }
+  100% { transform: translateY(-110vh) rotate(360deg) scale(0.6); opacity: 0; }
 }
 
 /* ── Container central ── */
 .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 36px;
 }
 
-/* ── Área de imagem PNG do envelope ── */
+/* ── Título fofo ── */
+.titulo-fofo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.45rem;
+  color: #c94070;
+  letter-spacing: 0.05em;
+  text-align: center;
+  animation: pulsarTitulo 3.5s ease-in-out infinite;
+}
+
+@keyframes pulsarTitulo {
+  0%, 100% { opacity: 0.65; transform: scale(1);    }
+  50%       { opacity: 1;    transform: scale(1.03); }
+}
+
+/* ── Envelope ── */
 .envelope-img-area {
   display: flex;
   justify-content: center;
@@ -31,53 +74,80 @@ body {
 }
 
 .envelope-img {
-  max-width: 320px;
+  max-width: 300px;
   width: 100%;
   height: auto;
   display: block;
   object-fit: contain;
+  animation: flutuar 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 24px rgba(201, 64, 112, 0.22));
+  transition: filter 0.3s ease;
+  cursor: pointer;
 }
 
-/* ── Botão ── */
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0px)   rotate(-0.6deg); }
+  50%       { transform: translateY(-14px) rotate(0.6deg);  }
+}
+
+.envelope-img:hover {
+  animation-play-state: paused;
+  filter: drop-shadow(0 14px 32px rgba(201, 64, 112, 0.42));
+  transform: scale(1.05) rotate(1.5deg) !important;
+}
+
+/* ── Botão principal ── */
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 32px;
+  gap: 8px;
+  padding: 14px 36px;
   background: linear-gradient(135deg, #e8637a 0%, #c94070 50%, #e87a8a 100%);
   color: #fff;
   border: none;
   border-radius: 50px;
-  font-family: 'Lora', Georgia, serif;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-family: 'Nunito', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   cursor: pointer;
   box-shadow: 0 4px 18px rgba(201, 64, 112, 0.35);
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s, filter 0.2s;
+  animation: pulsoBtn 2.5s ease-in-out infinite;
+  transition: transform 0.15s, filter 0.2s;
 }
 
-.btn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(201, 64, 112, 0.45);
+@keyframes pulsoBtn {
+  0%, 100% { box-shadow: 0 4px 18px rgba(201, 64, 112, 0.35); }
+  50%       { box-shadow: 0 4px 32px rgba(201, 64, 112, 0.65), 0 0 0 7px rgba(201, 64, 112, 0.1); }
 }
 
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 10px rgba(201, 64, 112, 0.3);
+.btn-shimmer {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  animation: shimmerBtn 3s ease-in-out infinite;
+  border-radius: 50px;
 }
 
-.btn-icon {
-  font-size: 1.1rem;
-  line-height: 1;
+@keyframes shimmerBtn {
+  0%        { left: -80%; }
+  40%, 100% { left: 140%; }
 }
+
+.btn:hover  { filter: brightness(1.1);  transform: translateY(-2px) scale(1.03); }
+.btn:active { transform: translateY(0) scale(0.97); }
 
 /* ── Overlay da carta ── */
 .carta-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: radial-gradient(ellipse at 50% 40%, rgba(60, 5, 25, 0.48) 0%, rgba(8, 0, 4, 0.74) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,16 +162,18 @@ body {
 .carta-overlay.visivel {
   opacity: 1;
   pointer-events: all;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   transition: opacity 0.45s ease, backdrop-filter 0.45s ease;
 }
 
+/* ── Conteúdo ── */
 .carta-conteudo {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 18px;
   transform-origin: center 60%;
 }
 
@@ -129,62 +201,192 @@ body {
 }
 
 .carta-conteudo.animar {
-  animation: abrirPagina 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: abrirPagina 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes fecharPagina {
+  0% {
+    transform: perspective(900px) rotateX(0deg) scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  18% {
+    transform: perspective(900px) rotateX(-4deg) scale(1.03) translateY(-6px);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(900px) rotateX(75deg) scale(0.5) translateY(60px);
+    opacity: 0;
+    filter: blur(7px);
+  }
+}
+
+.carta-conteudo.fechando {
+  animation: fecharPagina 0.55s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* ── Linha com setas + livro ── */
+.livro-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 /* ── Livro ── */
 .livro {
-  display: flex;
-  align-items: stretch;
-  border-radius: 4px 8px 8px 4px;
+  border-radius: 8px;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.45),
-    0 8px 24px rgba(0, 0, 0, 0.3);
+    0 28px 70px rgba(0, 0, 0, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
   position: relative;
+  overflow: hidden;
 }
 
+@keyframes livroFlutua {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-6px); }
+}
+
+.livro.flutuando {
+  animation: livroFlutua 4.5s ease-in-out infinite;
+}
+
+/* ── Palco e slot ── */
+.palco {
+  line-height: 0;
+  overflow: hidden;
+}
+
+.pagina-slot {
+  position: relative;
+  line-height: 0;
+}
+
+/* ── Animações de troca de card ── */
+@keyframes sairEsquerda {
+  from { transform: translateX(0)     scale(1);    opacity: 1; }
+  to   { transform: translateX(-50px) scale(0.93); opacity: 0; }
+}
+
+@keyframes sairDireita {
+  from { transform: translateX(0)    scale(1);    opacity: 1; }
+  to   { transform: translateX(50px) scale(0.93); opacity: 0; }
+}
+
+@keyframes entrarDaDireita {
+  from { transform: translateX(50px)  scale(0.93); opacity: 0; }
+  to   { transform: translateX(0)     scale(1);    opacity: 1; }
+}
+
+@keyframes entrarDaEsquerda {
+  from { transform: translateX(-50px) scale(0.93); opacity: 0; }
+  to   { transform: translateX(0)     scale(1);    opacity: 1; }
+}
+
+.pagina-slot.sair-esquerda   { animation: sairEsquerda    0.28s cubic-bezier(0.4, 0, 1, 1)   forwards; }
+.pagina-slot.sair-direita    { animation: sairDireita     0.28s cubic-bezier(0.4, 0, 1, 1)   forwards; }
+.pagina-slot.entrar-direita  { animation: entrarDaDireita  0.32s cubic-bezier(0, 0, 0.2, 1) forwards; }
+.pagina-slot.entrar-esquerda { animation: entrarDaEsquerda 0.32s cubic-bezier(0, 0, 0.2, 1) forwards; }
+
+/* ── Páginas ── */
 .pagina {
-  max-width: 28vw;
-  max-height: 82vh;
+  max-width: min(52vw, 440px);
+  max-height: 80vh;
   width: auto;
   height: auto;
   display: block;
   object-fit: contain;
 }
 
-.pagina-esq {
-  border-radius: 4px 0 0 4px;
-}
-
-.pagina-dir {
-  border-radius: 0 4px 4px 0;
-}
-
-.pagina-wrap {
-  position: relative;
-  line-height: 0;
-}
-
+/* ── Spotify ── */
 .spotify-overlay {
   position: absolute;
   top: 14%;
   left: 8%;
   width: 84%;
   pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.livro-espinha {
-  width: 10px;
+/* ── Texto fim da página 3 ── */
+.texto-fim-pagina {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c94070;
+  text-align: center;
+  margin-top: 6px;
+  text-shadow: 0 1px 6px rgba(201, 64, 112, 0.25);
+  animation: pulsarTitulo 3.5s ease-in-out infinite;
+}
+
+/* ── Setas de navegação ── */
+.seta {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #e8637a 0%, #c94070 50%, #e87a8a 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.18) 0%,
-    rgba(0, 0, 0, 0.06) 40%,
-    rgba(255, 255, 255, 0.08) 55%,
-    rgba(0, 0, 0, 0.12) 100%
-  );
+  box-shadow: 0 4px 14px rgba(201, 64, 112, 0.4);
+  transition: transform 0.2s ease, filter 0.2s ease, opacity 0.25s ease, box-shadow 0.2s ease;
+  user-select: none;
 }
 
+.seta:hover:not(:disabled) {
+  transform: scale(1.15);
+  filter: brightness(1.15);
+  box-shadow: 0 6px 22px rgba(201, 64, 112, 0.6);
+}
+
+.seta:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.seta:disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ── Indicadores de página ── */
+.dots-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dot.ativo {
+  background: #fff;
+  transform: scale(1.4);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.65);
+}
+
+.dot:hover:not(.ativo) {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.18);
+}
+
+/* ── Botão fechar ── */
 .btn-fechar {
   position: absolute;
   top: -16px;
@@ -200,12 +402,27 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(201, 64, 112, 0.35);
-  transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(201, 64, 112, 0.45);
+  transition: filter 0.2s, transform 0.25s, box-shadow 0.2s;
 }
 
 .btn-fechar:hover {
-  filter: brightness(1.1);
-  transform: scale(1.1);
-  box-shadow: 0 4px 14px rgba(201, 64, 112, 0.45);
+  filter: brightness(1.15);
+  transform: scale(1.12) rotate(90deg);
+  box-shadow: 0 4px 16px rgba(201, 64, 112, 0.55);
+}
+
+/* ── Partículas ── */
+.faisca {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999;
+  transform-origin: center;
+  animation: faiscar linear forwards;
+}
+
+@keyframes faiscar {
+  0%   { transform: translate(0, 0) scale(1.3); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
 }

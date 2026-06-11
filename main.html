@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For u</title>
+  <title>For u ♥</title>
   <link rel="stylesheet" href="estilo.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+  <div class="coracoes-bg" id="coracesBg"></div>
+
   <div class="container">
+    <p class="titulo-fofo">✦ uma cartinha para você ✦</p>
 
     <div class="envelope-img-area">
       <img
@@ -20,40 +25,230 @@
     </div>
 
     <button class="btn" id="btn" onclick="abrirCarta()">
-      <span class="btn-text">Abra a Carta</span>
+      <span class="btn-shimmer"></span>
+      <span class="btn-text">♥ Abra a Carta</span>
     </button>
   </div>
 
   <div class="carta-overlay" id="cartaOverlay" onclick="fecharCarta()">
     <div class="carta-conteudo" id="cartaConteudo" onclick="event.stopPropagation()">
-      <div class="livro">
-        <img src="pagina1.png" alt="Página 1" class="pagina pagina-esq" onerror="this.style.display='none'" />
-        <div class="livro-espinha"></div>
-        <img src="pagina2.png" alt="Página 2" class="pagina" onerror="this.style.display='none'" />
-        <div class="livro-espinha"></div>
-        <div class="pagina-wrap">
-          <img src="pagina3.png" alt="Página 3" class="pagina pagina-dir" onerror="this.style.display='none'" />
-          <div class="spotify-overlay">
-            <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6tiF3DY2Yh9dmIuIVCJHHH?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+      <div class="livro-nav">
+        <button class="seta seta-esq" id="setaEsq" onclick="trocarPagina(-1)" disabled>&#10094;</button>
+
+        <div class="livro" id="livro">
+          <div class="palco">
+            <div class="pagina-slot" id="paginaSlot">
+              <img src="pagina1.png" alt="Página 1"
+                class="pagina pagina-item"
+                onerror="this.dataset.broken='1'; this.style.display='none'" />
+              <img src="pagina2.png" alt="Página 2"
+                class="pagina pagina-item"
+                style="display:none"
+                onerror="this.dataset.broken='1'; this.style.display='none'" />
+              <img src="pagina3.png" alt="Página 3"
+                class="pagina pagina-item"
+                style="display:none"
+                onerror="this.dataset.broken='1'; this.style.display='none'" />
+              <div class="spotify-overlay" id="spotifyOverlay" style="display:none">
+                <iframe
+                  data-testid="embed-iframe"
+                  style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/68eBEUfmUZ3GKC4w1xkOWP?utm_source=generator&theme=0"
+                  width="100%" height="100" frameBorder="0"
+                  allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+                </iframe>
+                <iframe
+                  data-testid="embed-iframe"
+                  style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/5ITV0zqzjOYfFWpW0xBmRa?utm_source=generator"
+                  width="100%" height="100" frameBorder="0"
+                  allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+                </iframe>
+                <iframe
+                  data-testid="embed-iframe"
+                  style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/7yNf9YjeO5JXUE3JEBgnYc?utm_source=generator&theme=0"
+                  width="100%" height="100" frameBorder="0"
+                  allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+                </iframe>
+                <iframe
+                  data-testid="embed-iframe"
+                  style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/7KA4W4McWYRpgf0fWsJZWB?utm_source=generator&theme=0"
+                  width="100%" height="100" frameBorder="0"
+                  allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+                </iframe>
+                <p class="texto-fim-pagina">Feliz dia dos "namorados" sz ♥</p>
+              </div>
+            </div>
           </div>
         </div>
+
+        <button class="seta seta-dir" id="setaDir" onclick="trocarPagina(1)">&#10095;</button>
       </div>
+
+      <div class="dots-nav" id="dotsNav">
+        <span class="dot ativo" onclick="irParaPagina(0)"></span>
+        <span class="dot"       onclick="irParaPagina(1)"></span>
+        <span class="dot"       onclick="irParaPagina(2)"></span>
+      </div>
+
       <button class="btn-fechar" onclick="fecharCarta()">✕</button>
     </div>
   </div>
 
   <script>
+    /* ── Corações flutuantes no fundo ── */
+    (function criarCoracoes() {
+      const simbolos = ['♥', '♡', '✦', '✧', '✿', '˚', '·', '❀'];
+      const bg = document.getElementById('coracesBg');
+      for (let i = 0; i < 22; i++) {
+        const c = document.createElement('span');
+        c.className = 'coracao';
+        c.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+        c.style.left              = (Math.random() * 100) + 'vw';
+        c.style.fontSize          = (Math.random() * 16 + 7) + 'px';
+        c.style.animationDuration = (Math.random() * 12 + 9) + 's';
+        c.style.animationDelay    = (Math.random() * 14) + 's';
+        c.style.opacity           = (Math.random() * 0.35 + 0.15).toFixed(2);
+        bg.appendChild(c);
+      }
+    })();
+
+    /* ── Explosão de partículas ── */
+    function explosaoFaiscas() {
+      const cores = ['#e8637a', '#f48fb1', '#ffffff', '#ffcdd2', '#f06292', '#fce4ec'];
+      const cx = window.innerWidth  / 2;
+      const cy = window.innerHeight / 2;
+      for (let i = 0; i < 28; i++) {
+        const f = document.createElement('div');
+        f.className = 'faisca';
+        const angulo = (i / 28) * 360 + Math.random() * 13;
+        const dist   = Math.random() * 140 + 60;
+        f.style.left       = cx + 'px';
+        f.style.top        = cy + 'px';
+        f.style.background = cores[Math.floor(Math.random() * cores.length)];
+        f.style.width      = (Math.random() * 9 + 4) + 'px';
+        f.style.height     = f.style.width;
+        f.style.setProperty('--dx', (Math.cos(angulo * Math.PI / 180) * dist) + 'px');
+        f.style.setProperty('--dy', (Math.sin(angulo * Math.PI / 180) * dist) + 'px');
+        f.style.animationDuration = (Math.random() * 0.4 + 0.5) + 's';
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 1000);
+      }
+    }
+
+    /* ── Gerenciamento de páginas ── */
+    let paginaAtual = 0;
+    let animando    = false;
+    const TOTAL     = 3;
+
+    function atualizarPagina() {
+      const items   = document.querySelectorAll('.pagina-item');
+      const spotify = document.getElementById('spotifyOverlay');
+      const dots    = document.querySelectorAll('.dot');
+      const esq     = document.getElementById('setaEsq');
+      const dir     = document.getElementById('setaDir');
+
+      items.forEach((img, i) => {
+        if (!img.dataset.broken) {
+          img.style.display = (i === paginaAtual) ? 'block' : 'none';
+        }
+      });
+
+      spotify.style.display = (paginaAtual === 2) ? 'block' : 'none';
+
+      dots.forEach((d, i) => d.classList.toggle('ativo', i === paginaAtual));
+
+      esq.disabled = (paginaAtual === 0);
+      dir.disabled = (paginaAtual === TOTAL - 1);
+    }
+
+    function _animar(novaPagina, dir) {
+      const slot       = document.getElementById('paginaSlot');
+      const classSaida  = dir > 0 ? 'sair-esquerda' : 'sair-direita';
+      const classEntrada = dir > 0 ? 'entrar-direita' : 'entrar-esquerda';
+
+      animando = true;
+      slot.classList.add(classSaida);
+
+      slot.addEventListener('animationend', () => {
+        slot.classList.remove(classSaida);
+        paginaAtual = novaPagina;
+        atualizarPagina();
+        void slot.offsetWidth;
+        slot.classList.add(classEntrada);
+
+        slot.addEventListener('animationend', () => {
+          slot.classList.remove(classEntrada);
+          animando = false;
+        }, { once: true });
+      }, { once: true });
+    }
+
+    function trocarPagina(dir) {
+      if (animando) return;
+      const nova = paginaAtual + dir;
+      if (nova < 0 || nova >= TOTAL) return;
+      _animar(nova, dir);
+    }
+
+    function irParaPagina(idx) {
+      if (animando || idx === paginaAtual) return;
+      _animar(idx, idx > paginaAtual ? 1 : -1);
+    }
+
+    /* ── Abrir / fechar ── */
     function abrirCarta() {
-      const overlay = document.getElementById('cartaOverlay');
+      const overlay  = document.getElementById('cartaOverlay');
       const conteudo = document.getElementById('cartaConteudo');
+      const livro    = document.getElementById('livro');
+
+      paginaAtual = 0;
+      animando    = false;
+      atualizarPagina();
+
       overlay.classList.add('visivel');
       conteudo.classList.remove('animar');
+      livro.classList.remove('flutuando');
       void conteudo.offsetWidth;
       conteudo.classList.add('animar');
+
+      setTimeout(explosaoFaiscas, 200);
+
+      conteudo.addEventListener('animationend', () => {
+        livro.classList.add('flutuando');
+      }, { once: true });
     }
 
     function fecharCarta() {
-      document.getElementById('cartaOverlay').classList.remove('visivel');
+      const overlay  = document.getElementById('cartaOverlay');
+      const conteudo = document.getElementById('cartaConteudo');
+      const livro    = document.getElementById('livro');
+      const slot     = document.getElementById('paginaSlot');
+
+      if (conteudo.classList.contains('fechando')) return;
+
+      livro.classList.remove('flutuando');
+      slot.classList.remove('sair-esquerda', 'sair-direita', 'entrar-direita', 'entrar-esquerda');
+      animando = false;
+
+      conteudo.classList.remove('animar');
+      conteudo.classList.add('fechando');
+
+      conteudo.addEventListener('animationend', () => {
+        conteudo.classList.remove('fechando');
+        overlay.classList.remove('visivel');
+      }, { once: true });
     }
   </script>
 
